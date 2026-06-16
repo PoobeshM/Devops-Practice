@@ -1,0 +1,38 @@
+name: Java CI CD
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: CICD-Pipeline-Test
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Build Project
+        run: mvn clean compile
+      - name: Run JUnit Test
+        run: mvn test
+
+  deploy:
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for 1 Hour
+        run: sleep 3600
+      - name: Deploy Application
+        run: |
+          echo "Deploying Application..."
+          echo "Application Deployed Successfully"
