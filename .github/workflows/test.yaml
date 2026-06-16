@@ -37,27 +37,27 @@ jobs:
           echo "Deploying Application..."
           echo "Application Deployed Successfully"
   email:
-    needs: Sending-Notification
-    runs-on: ubuntu-latest
-    steps:
-      - name: deploy
-        uses: dawidd6/action-send-mail@v3
-        with: 
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
-          username: ${{ secrets.GMAIL_USERNAME}}
-          password: ${{ secrets.GMAIL_PASSWORD}}
-          subject: The Calurator is UP
-          to: mpoobesh123@gmail.com
-          from: GitHub Actions
-          body: |
-            Hello Poobesh,
-            
-            Your Java CI/CD Pipeline executed successfully.
-            
-            ✓ Build Successful
+  needs: deploy
+  runs-on: ubuntu-latest
+  steps:
+    - name: Send Email
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        secure: true
+        username: ${{ secrets.GMAIL_USERNAME }}
+        password: ${{ secrets.GMAIL_PASSWORD }}
+        subject: The Calculator is UP
+        to: mpoobesh123@gmail.com
+        from: GitHub Actions
+        body: |
+          Hello Poobesh,
 
-            ✓ JUnit Tests Passed
+          Your Java CI/CD Pipeline executed successfully.
 
-            ✓ Deployment Completed
+          ✓ Build Successful
+
+          ✓ JUnit Tests Passed
+
+          ✓ Deployment Completed
